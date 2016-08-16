@@ -48,7 +48,7 @@ namespace ASP.NET.Controllers
             return View(com);
         }
 
-        // POST: Commandes/Create
+        //// POST: Commandes/Create
         // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
