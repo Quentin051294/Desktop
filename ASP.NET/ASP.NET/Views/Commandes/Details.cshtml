@@ -1,0 +1,42 @@
+﻿@model ASP.NET.Models.Commande
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Commande</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.quantiteDemandee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantiteDemandee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Client.nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Materiau.libelleFrancais)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Materiau.libelleFrancais)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="masterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="numeroIdentification" />
+          </Key>
+          <Property Name="numeroIdentification" Type="numeric" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="idCommande" />
+            <PropertyRef Name="codeIdentification" />
+            <PropertyRef Name="numeroIdentification" />
+          </Key>
+          <Property Name="idCommande" Type="numeric" Precision="14" Scale="0" Nullable="false" />
+          <Property Name="quantiteDemandee" Type="numeric" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="codeIdentification" Type="numeric" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="numeroIdentification" Type="numeric" Precision="4" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Materiau">
+          <Key>
+            <PropertyRef Name="codeIdentification" />
+          </Key>
+          <Property Name="codeIdentification" Type="numeric" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="libelleFrancais" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="prixUniteVente" Type="numeric" Precision="4" Scale="0" Nullable="false" />
+        </EntityType>
+        <Association Name="REF_Comma_Clien_FK">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="numeroIdentification" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="numeroIdentification" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REF_Comma_Mater_FK">
+          <End Role="Materiau" Type="Self.Materiau" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materiau">
+              <PropertyRef Name="codeIdentification" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="codeIdentification" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="masterModelStoreContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Materiau" EntityType="Self.Materiau" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="REF_Comma_Clien_FK" Association="Self.REF_Comma_Clien_FK">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="REF_Comma_Mater_FK" Association="Self.REF_Comma_Mater_FK">
+            <End Role="Materiau" EntitySet="Materiau" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="masterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="numeroIdentification" />
+          </Key>
+          <Property Name="numeroIdentification" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Commande" Relationship="Self.REF_Comma_Clien_FK" FromRole="Client" ToRole="Commande" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="idCommande" />
+            <PropertyRef Name="codeIdentification" />
+            <PropertyRef Name="numeroIdentification" />
+          </Key>
+          <Property Name="idCommande" Type="Decimal" Precision="14" Scale="0" Nullable="false" />
+          <Property Name="quantiteDemandee" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="codeIdentification" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="numeroIdentification" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.REF_Comma_Clien_FK" FromRole="Commande" ToRole="Client" />
+          <NavigationProperty Name="Materiau" Relationship="Self.REF_Comma_Mater_FK" FromRole="Commande" ToRole="Materiau" />
+        </EntityType>
+        <EntityType Name="Materiau">
+          <Key>
+            <PropertyRef Name="codeIdentification" />
+          </Key>
+          <Property Name="codeIdentification" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="libelleFrancais" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="prixUniteVente" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Commande" Relationship="Self.REF_Comma_Mater_FK" FromRole="Materiau" ToRole="Commande" />
+        </EntityType>
+        <Association Name="REF_Comma_Clien_FK">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="numeroIdentification" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="numeroIdentification" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="REF_Comma_Mater_FK">
+          <End Role="Materiau" Type="Self.Materiau" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materiau">
+              <PropertyRef Name="codeIdentification" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="codeIdentification" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="masterEntities4" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Commande" EntityType="Self.Commande" />
+          <EntitySet Name="Materiau" EntityType="Self.Materiau" />
+          <AssociationSet Name="REF_Comma_Clien_FK" Association="Self.REF_Comma_Clien_FK">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="REF_Comma_Mater_FK" Association="Self.REF_Comma_Mater_FK">
+            <End Role="Materiau" EntitySet="Materiau" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="masterModelStoreContainer" CdmEntityContainer="masterEntities4">
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="masterModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="numeroIdentification" ColumnName="numeroIdentification" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Commande">
+            <EntityTypeMapping TypeName="masterModel.Commande">
+              <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="idCommande" ColumnName="idCommande" />
+                <ScalarProperty Name="quantiteDemandee" ColumnName="quantiteDemandee" />
+                <ScalarProperty Name="codeIdentification" ColumnName="codeIdentification" />
+                <ScalarProperty Name="numeroIdentification" ColumnName="numeroIdentification" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Materiau">
+            <EntityTypeMapping TypeName="masterModel.Materiau">
+              <MappingFragment StoreEntitySet="Materiau">
+                <ScalarProperty Name="codeIdentification" ColumnName="codeIdentification" />
+                <ScalarProperty Name="libelleFrancais" ColumnName="libelleFrancais" />
+                <ScalarProperty Name="prixUniteVente" ColumnName="prixUniteVente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
